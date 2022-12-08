@@ -242,10 +242,10 @@ export interface Component {
   blur: Function;
   update: Function;
   createField: Function;
-  mount(id?: any): Promise<boolean>;
+  mount(id?: string): Promise<boolean>;
   framesCreated(): string[];
   delegateEvent(event: CustomEvent): void;
-  tokenize(data?: any): any;
+  tokenize(data?: AdditionalData): any;
   authorizeWith3ds(
     paymentIntent: PaymentIntent,
     additionalData: AdditionalData,
