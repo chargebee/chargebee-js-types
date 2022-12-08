@@ -5,6 +5,5 @@
   "author": "",
   "license": "MIT",
   "scripts": {},
-  "typeScriptVersion": "4.8.4",
   "types": "index.d.ts"
 }
