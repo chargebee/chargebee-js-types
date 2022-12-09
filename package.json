@@ -16,5 +16,6 @@
     "url": "git@github.com:chargebee/chargebee-js-types.git"
   },
   "license": "MIT",
-  "types": "index.d.ts"
+  "types": "index.d.ts",
+  "keywords": ["chargebee", "chargebee.js", "chargebee types", "chargebee.js types", "chargebee components"]
 }

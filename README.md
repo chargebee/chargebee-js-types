@@ -2,5 +2,5 @@
 
 Type definitions for Chargebee JS SDK.
 
-### Usage
+### Install
 `npm install --save-dev @chargebee/chargebee-js-types`
