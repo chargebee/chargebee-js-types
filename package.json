@@ -1,0 +1,21 @@
+{
+  "name": "@chargebee/chargebee-js-types",
+  "version": "1.0.0",
+  "description": "TypeScript Definitions for Chargebee.js",
+  "author": "Farhan Halai <farhan.h@chargebee.com>",
+  "contributors": [
+    "Dinesh Kumar <dinesh@chargebee.com>"
+  ],
+  "homepage": "https://github.com/chargebee/chargebee-js-types#readme",
+  "bugs": {
+    "url": "https://github.com/chargebee/chargebee-js-types/issues",
+    "email": "support@chargebee.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:chargebee/chargebee-js-types.git"
+  },
+  "license": "MIT",
+  "types": "index.d.ts",
+  "keywords": ["chargebee", "chargebee.js", "chargebee types", "chargebee.js types", "chargebee components"]
+}
