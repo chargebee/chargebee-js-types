@@ -1,6 +1,6 @@
 {
   "name": "@chargebee/chargebee-js-types",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TypeScript Definitions for Chargebee.js",
   "author": "Farhan Halai <farhan.h@chargebee.com>",
   "contributors": [

@@ -24,6 +24,8 @@ type InitOptions = {
 };
 
 type ChargebeeInstance = {
+  site: string;
+  publishableKey: string;
   createComponent(
     type: ComponentType,
     options: ComponentOptions
