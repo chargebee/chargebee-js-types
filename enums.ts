@@ -173,3 +173,24 @@ export enum PaymentAttemptStatus {
   AUTHORIZED = 'authorized',
   REFUSED = 'refused',
 }
+
+export enum Layout {
+  IN_APP = 'in_app',
+  FULL_PAGE = 'full_page',
+}
+
+export enum Module {
+  COMPONENTS = 'components',
+  THREE_DS_HANDLER = '3ds-handler',
+  FUNCTIONS = 'functions',
+  IDEAL = 'ideal',
+  SOFORT = 'sofort',
+  GOOGLE_PAY = 'google-pay',
+  BANCONTACT = 'bancontact',
+  DOTPAY = 'dotpay',
+  GIROPAY = 'giropay',
+  PAYPAL = 'paypal',
+  NETBANKING_EMANDATES = 'netbanking_emandates',
+  APPLE_PAY = 'apple-pay',
+  UPI = 'upi',
+}
