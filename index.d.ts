@@ -35,18 +35,18 @@ type OpenCheckoutOptions = {
 };
 
 interface AddressDetails {
-  first_name: string;
-  last_name: string;
-  company: string;
-  phone: string;
-  email: string;
-  line1: string;
-  line2: string;
-  city: string;
-  state: string;
-  state_code: string;
-  country: string;
-  zip: string;
+  first_name?: string;
+  last_name?: string;
+  company?: string;
+  phone?: string;
+  email?: string;
+  line1?: string;
+  line2?: string;
+  city?: string;
+  state?: string;
+  state_code?: string;
+  country?: string;
+  zip?: string;
 }
 
 type BillingAddress = AddressDetails;
@@ -117,7 +117,7 @@ interface Cart {
   setShippingAddress(shippingAddress: ShippingAddress): Cart;
 }
 
-interface PortalOpenOptions {
+interface PortalCallbacks {
   loaded: Function;
   close: Function;
   visit(sectionType: string): void;
@@ -149,10 +149,8 @@ interface PortalOpenSectionOptions {
   };
 }
 
-interface PortalCallbacks extends PortalOpenOptions {}
-
 interface Portal {
-  open(options: PortalOpenOptions, forwardOptions: PortalForwardOptions): void;
+  open(options: PortalCallbacks, forwardOptions: PortalForwardOptions): void;
   openSection(
     options: PortalOpenSectionOptions,
     callbacks: PortalCallbacks
