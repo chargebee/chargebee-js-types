@@ -11,6 +11,7 @@ import {
   Gateway,
   PaymentIntentStatus,
   PaymentMethodType,
+  Layout,
 } from './enums';
 
 declare var Chargebee: {
@@ -23,12 +24,319 @@ type InitOptions = {
   publishableKey: string;
 };
 
+type OpenCheckoutOptions = {
+  hostedPage: Function;
+  layout: Layout;
+  loaded: Function;
+  error: Function;
+  success(hostedPageId: string): void;
+  close: Function;
+  step(currentStep: string): void;
+};
+
+interface AddressDetails {
+  first_name?: string;
+  last_name?: string;
+  company?: string;
+  phone?: string;
+  email?: string;
+  line1?: string;
+  line2?: string;
+  city?: string;
+  state?: string;
+  state_code?: string;
+  country?: string;
+  zip?: string;
+}
+
+type BillingAddress = AddressDetails;
+
+type ShippingAddress = AddressDetails;
+
+interface CustomerDetails {
+  first_name: string;
+  last_name: string;
+  company: string;
+  phone: string;
+  email: string;
+  billingAddress: BillingAddress;
+}
+
+interface AddOn {
+  id: string;
+  quantity?: number;
+  quantity_in_decimal?: string;
+}
+
+type EventBasedAddon = {
+  id?: string;
+  quantity?: number;
+  unit_price?: number;
+  service_period_in_days?: number;
+  on_event?:
+    | 'subscription_creation'
+    | 'subscription_trial_start'
+    | 'plan_activation'
+    | 'subscription_activation';
+  charge_once?: boolean;
+  charge_on?: 'immediately' | 'on_event';
+};
+
+interface ChargeItem extends AddOn {}
+
+interface Product {
+  setPlanQuantity(planQuantity: number): Product;
+  setPlanQuantityInDecimal(decimalQuantity: string): Product;
+  incrementPlanQuantity(): Product;
+  decrementPlanQuantity(): Product;
+  addAddon(addon: AddOn | string): Product;
+  removeAddon(addon: AddOn | string): Product;
+  setAddons(addons: Array<AddOn>): Product;
+  incrementAddonQty(addonId: string): Product;
+  decrementAddonQty(addonId: string): Product;
+  addCoupon(couponCode: string): Product;
+  removeCoupon(couponCode: string): Product;
+  setCustomData(
+    data: object /** Object containing subs custom fields */
+  ): Product;
+  getLayout(): Layout;
+  setLayout(layout: Layout): void;
+  setCharges(charges: Array<ChargeItem>): Product;
+  addCharge(chargeItem: ChargeItem): Product;
+  removeCharge(chargeItemId: string): Product;
+  incrementChargeQty(chargeItemId: string): Product;
+  decrementChargeQty(chargeItemId: string): Product;
+}
+
+interface Cart {
+  replaceProduct(product: Product): Cart;
+  proceedToCheckout(): void;
+  setBusinessEntity(businessEntityId: string): Promise<void>;
+  setAffiliateToken(token: string): Cart;
+  setCustomer(customer: Customer): Cart;
+  setShippingAddress(shippingAddress: ShippingAddress): Cart;
+}
+
+interface PortalCallbacks {
+  loaded: Function;
+  close: Function;
+  visit(sectionType: string): void;
+  paymentSourceAdd: Function;
+  paymentSourceUpdate: Function;
+  paymentSourceRemove: Function;
+  subscriptionChanged(data: { subscription: { id: string } }): void;
+  subscriptionCustomFieldsChanged(data: { subscription: { id: string } }): void;
+  subscriptionCancelled(data: { subscription: { id: string } }): void;
+  subscriptionResumed(data: { subscription: { id: string } }): void;
+  subscriptionPaused(data: { subscription: { id: string } }): void;
+  scheduledPauseRemoved(data: { subscription: { id: string } }): void;
+  scheduledCancellationRemoved(data: { subscription: { id: string } }): void;
+  subscriptionReactivated(data: { subscription: { id: string } }): void;
+}
+
+interface PortalForwardOptions {
+  sectionType: string;
+  params: {
+    subscriptionId: string;
+    paymentSourceId: string;
+  };
+}
+
+interface PortalOpenSectionOptions {
+  sectionType: string;
+  params: {
+    subscriptionId: string;
+  };
+}
+
+interface Portal {
+  open(options: PortalCallbacks, forwardOptions: PortalForwardOptions): void;
+  openSection(
+    options: PortalOpenSectionOptions,
+    callbacks: PortalCallbacks
+  ): void;
+}
+
+interface SetCheckoutCallbacks {
+  loaded: Function;
+  error: Function;
+  success(hostedPageId: string): void;
+  close: Function;
+  step(currentStep: string): void;
+}
+
+interface SetPaymentIntentOptions {
+  stripe: object;
+  braintree: object;
+  adyen: object;
+}
+
+type CardInfo = {
+  number: string;
+  expiryMonth: string;
+  expiryYear: string;
+  cvv: string;
+  firstName?: string;
+  lastName?: string;
+};
+
+type PaymentInfo = {
+  element?: any;
+  card?: CardInfo;
+  tokenizer?: Function;
+  cbToken?: string;
+  cardComponent?: string;
+  additionalData?: AdditionalData;
+};
+
+interface ThreeDSHandler {
+  setPaymentIntent(
+    paymentIntent: PaymentIntent,
+    options: SetPaymentIntentOptions
+  ): void;
+  updatePaymentIntent(paymentIntent: PaymentIntent): void;
+  handleCardPayment(
+    paymentInfo: PaymentInfo,
+    callbacks: Callbacks
+  ): Promise<PaymentIntent>;
+  getPaymentIntent(): PaymentIntent;
+}
+
+type PaymentCallbacks = {
+  change: Function;
+  success: Function;
+  error: Function;
+};
+
+type PaymentOptions = {
+  paymentIntent: Function;
+  paymentInfo: PaymentInfo;
+  callbacks: PaymentCallbacks;
+  redirectMode: boolean;
+};
+
+type Subscription = {
+  id?: string;
+  plan_id: string;
+  plan_quantity?: number;
+  plan_unit_price?: number;
+  setup_fee?: number;
+  start_date?: number;
+  trial_end?: number;
+};
+
+type CommonSubscriptionEstimate = {
+  customer?: Customer;
+  subscription?: Subscription;
+
+  billing_cycles?: number;
+  terms_to_charge?: number;
+  invoice_immediately?: boolean;
+  billing_alignment_mode?: 'immediate' | 'delayed';
+
+  shipping_address?: ShippingAddress;
+  billing_address?: BillingAddress;
+
+  coupon_ids?: Array<string>;
+  addons?: Array<AddOn>;
+  event_based_addons?: Array<EventBasedAddon>;
+  mandatory_addons_to_remove?: Array<string>;
+};
+
+type CreateSubscriptionEstimate = CommonSubscriptionEstimate & {
+  client_profile_id?: string;
+};
+
+type UpdateSubscriptionEstimate = CommonSubscriptionEstimate & {
+  replace_addon_list?: boolean;
+  reactivate_from?: number;
+  replace_coupon_list?: boolean;
+  prorate?: boolean;
+  end_of_term?: boolean;
+  force_term_reset?: boolean;
+  reactivate?: boolean;
+  include_delayed_charges?: boolean;
+  use_existing_balances?: boolean;
+};
+
+type SubscriptionRenewalEstimate = {
+  id: string;
+  subscription?: {
+    id: string;
+  };
+  include_delayed_charges?: boolean;
+  use_existing_balances?: boolean;
+  ignore_scheduled_cancellation?: boolean;
+  ignore_scheduled_changes?: boolean;
+};
+
+interface EstimatesFunctions {
+  createSubscriptionEstimate(
+    payload: CreateSubscriptionEstimate
+  ): Promise<object> /** Resource object representing estimate */;
+  updateSubscriptionEstimate(
+    payload: UpdateSubscriptionEstimate
+  ): Promise<object> /** Resource object representing estimate */;
+  renewSubscriptionEstimate(
+    payload: SubscriptionRenewalEstimate
+  ): Promise<object> /** Resource object representing estimate */;
+}
+
+type VatValidationParams = {
+  country: string;
+  vat_number: string;
+};
+
+type VatValidationResponse = {
+  status: 'VALID' | 'INVALID' | 'UNDETERMINED';
+  message: string;
+};
+
+interface VatFunctions {
+  validateVat(payload: VatValidationParams): VatValidationResponse;
+}
+
 type ChargebeeInstance = {
+  site: string;
+  publishableKey: string;
   createComponent(
     type: ComponentType,
     options: ComponentOptions
   ): ChargebeeComponent;
   tokenize(component: Component, additionalData: object): void;
+
+  /** Checkout and Portal Integration */
+  setBusinessEntity(businessEntityId: string): Promise<void>;
+  openCheckout(options: OpenCheckoutOptions): void;
+  getCart(): Cart;
+  getProduct(checkoutButtonElement: HTMLElement): Product;
+  initializeProduct(
+    planId: string,
+    planQuantity: number
+  ): Product;
+  setCheckoutCallbacks(
+    setterFunction: (cart: Cart) => SetCheckoutCallbacks
+  ): void;
+  createChargebeePortal(): Portal;
+  setPortalSession(setterFunction: Function): Promise<Portal>;
+  logout(): void;
+  closeAll(): void;
+  setPortalCallbacks(callbacks: PortalCallbacks): void;
+
+  /** Payment Integrations */
+  load(
+    moduleName: string
+  ): Promise<any> /** Promise resolves to corresponding module handler */;
+  load3DSHandler(): Promise<ThreeDSHandler>;
+  create3DSHandler(): ThreeDSHandler;
+  handlePayment(
+    paymentMethodType: PaymentMethodType,
+    paymentOptions: PaymentOptions
+  ): Promise<PaymentIntent> /** Promise resolves to authorized payment intent */;
+
+  /** Functions */
+  estimates: EstimatesFunctions;
+  vat: VatFunctions;
 };
 
 type ChargebeeComponent = {
@@ -245,7 +553,7 @@ export interface Component {
   mount(id?: string): Promise<boolean>;
   framesCreated(): string[];
   delegateEvent(event: CustomEvent): void;
-  tokenize(data?: AdditionalData): any;
+  tokenize(data?: AdditionalData): Promise<object>;
   authorizeWith3ds(
     paymentIntent: PaymentIntent,
     additionalData: AdditionalData,
