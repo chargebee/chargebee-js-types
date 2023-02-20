@@ -14,7 +14,7 @@ import {
   Layout,
 } from './enums';
 
-declare var Chargebee: {
+type Chargebee = {
   init(op: InitOptions): void;
   getInstance(): ChargebeeInstance;
 };
@@ -560,3 +560,5 @@ export interface Component {
     callbacks: Callbacks
   ): Promise<PaymentIntent>;
 }
+
+export default Chargebee

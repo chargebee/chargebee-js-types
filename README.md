@@ -11,7 +11,7 @@ Type definitions for Chargebee JS SDK.
 To have the `Chargebee` object properly typed, add the following global type definition, such as in `global.d.ts`:
 
 ```typescript
-import { Chargebee } from "@chargebee/chargebee-js-types"
+import Chargebee from "@chargebee/chargebee-js-types"
 
 declare global {
 	var Chargebee: Chargebee
