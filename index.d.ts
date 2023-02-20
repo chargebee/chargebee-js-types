@@ -25,14 +25,14 @@ type InitOptions = {
 };
 
 type OpenCheckoutOptions = {
-  hostedPage: Function;
-  layout: Layout;
-  loaded: Function;
-  error: Function;
-  success(hostedPageId: string): void;
-  close: Function;
-  step(currentStep: string): void;
-};
+  hostedPage(): Promise<HostedPage>
+  layout?: Layout
+  loaded?: Function
+  error?: Function
+  success?(hostedPageId: string): void
+  close?: Function
+  step?(currentStep: string): void
+}
 
 interface AddressDetails {
   first_name?: string;
@@ -559,4 +559,14 @@ export interface Component {
     additionalData: AdditionalData,
     callbacks: Callbacks
   ): Promise<PaymentIntent>;
+}
+
+export type HostedPage = {
+  id: string
+  type: string
+  url: string
+  state: string
+  embed: boolean
+  created_at: number
+  expires_at: number
 }
