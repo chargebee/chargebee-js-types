@@ -34,6 +34,16 @@ type OpenCheckoutOptions = {
   step?(currentStep: string): void
 }
 
+export type HostedPage = {
+  id: string
+  type: string
+  url: string
+  state: string
+  embed: boolean
+  created_at: number
+  expires_at: number
+}
+
 interface AddressDetails {
   first_name?: string;
   last_name?: string;
@@ -559,14 +569,4 @@ export interface Component {
     additionalData: AdditionalData,
     callbacks: Callbacks
   ): Promise<PaymentIntent>;
-}
-
-export type HostedPage = {
-  id: string
-  type: string
-  url: string
-  state: string
-  embed: boolean
-  created_at: number
-  expires_at: number
 }
