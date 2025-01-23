@@ -194,6 +194,3 @@ export enum Module {
   APPLE_PAY = 'apple-pay',
   UPI = 'upi',
 }
-
-const key = "AIzaSyBk5SBUDNAHLqGVy-dtSDCea_JhHRtYacc";
-
