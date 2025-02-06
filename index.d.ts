@@ -14,8 +14,8 @@ import {
   Layout,
 } from './enums';
 
-declare var Chargebee: {
-  init(op: InitOptions): void;
+export declare var Chargebee: {
+  init(op: InitOptions): ChargebeeInstance;
   getInstance(): ChargebeeInstance;
 };
 
@@ -296,7 +296,7 @@ interface VatFunctions {
   validateVat(payload: VatValidationParams): VatValidationResponse;
 }
 
-type ChargebeeInstance = {
+export type ChargebeeInstance = {
   site: string;
   publishableKey: string;
   createComponent(
