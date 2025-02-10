@@ -6,6 +6,9 @@
   "contributors": [
     "Dinesh Kumar <dinesh@chargebee.com>"
   ],
+  "scripts": {
+    "precommit": "pre-commit install"
+  },
   "homepage": "https://github.com/chargebee/chargebee-js-types#readme",
   "bugs": {
     "url": "https://github.com/chargebee/chargebee-js-types/issues",
