@@ -1,3 +1,7 @@
+### v1.0.2  (2023-01-11)
+* * * 
+Exported Chargebee root type as default.
+
 ### v1.0.1  (2023-01-11)
 * * *
 Updated types for `ChargebeeInstance`.
