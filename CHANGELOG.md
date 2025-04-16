@@ -1,4 +1,4 @@
-### v1.0.2  (2023-01-11)
+### v1.0.2  (2025-04-16)
 * * * 
 Exported Chargebee root type as default.
 
