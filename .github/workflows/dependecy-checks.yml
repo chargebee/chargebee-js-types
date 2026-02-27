@@ -1,0 +1,16 @@
+name: Dependency Installation Checks
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  DependencyChecks:
+    uses: chargebee/cb-ecs-utils/.github/workflows/cb-dependency-installation-checks.yml@main
+    secrets: inherit
